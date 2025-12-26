@@ -12,11 +12,33 @@ type ProfileFormProps = {
   onSaved?: () => void
 }
 
+function isEmail(v: string) {
+  const s = v.trim()
+  if (!s) return false
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s)
+}
+
 function normalizeUrl(v: string) {
   const s = v.trim()
   if (!s) return null
   if (s.startsWith('http://') || s.startsWith('https://')) return s
   return `https://${s}`
+}
+
+function normalizeEmailLink(v: string) {
+  const s = v.trim()
+  if (!s) return null
+  if (s.toLowerCase().startsWith('mailto:')) return s
+  if (isEmail(s)) return `mailto:${s}`
+  return null
+}
+
+function initialEmailValue(v: string | null | undefined) {
+  const s = (v ?? '').trim()
+  if (!s) return ''
+  if (s.toLowerCase().startsWith('mailto:')) return s.slice(7)
+  if (isEmail(s)) return s
+  return ''
 }
 
 function formatProfileSaveError(err: unknown) {
@@ -50,7 +72,7 @@ export function ProfileForm({ mode, initial, onSaved }: ProfileFormProps) {
   const [designation, setDesignation] = useState(initial?.designation ?? '')
   const [bio, setBio] = useState(initial?.bio ?? '')
   const [phoneNo, setPhoneNo] = useState(initial?.phone_no ?? '')
-  const [whatsappLink, setWhatsappLink] = useState(initial?.whatsapp_link ?? '')
+  const [contactEmail, setContactEmail] = useState(() => initialEmailValue(initial?.whatsapp_link))
   const [linkedinUrl, setLinkedinUrl] = useState(initial?.linkedin_url ?? '')
   const [instagramUrl, setInstagramUrl] = useState(initial?.instagram_url ?? '')
   const [guidanceNeeded, setGuidanceNeeded] = useState(Boolean(initial?.guidance_needed))
@@ -123,7 +145,7 @@ export function ProfileForm({ mode, initial, onSaved }: ProfileFormProps) {
             designation: designation.trim() || null,
             bio: bio.trim() || null,
             phone_no: phoneNo.trim(),
-            whatsapp_link: normalizeUrl(whatsappLink),
+            whatsapp_link: normalizeEmailLink(contactEmail),
             linkedin_url: normalizeUrl(linkedinUrl),
             instagram_url: normalizeUrl(instagramUrl),
             resume_path: resumePath,
@@ -275,12 +297,13 @@ export function ProfileForm({ mode, initial, onSaved }: ProfileFormProps) {
         </label>
 
         <label className="grid gap-1">
-          <span className="text-sm font-medium">WhatsApp link</span>
+          <span className="text-sm font-medium">Email</span>
           <input
-            value={whatsappLink}
-            onChange={(e) => setWhatsappLink(e.target.value)}
+            value={contactEmail}
+            onChange={(e) => setContactEmail(e.target.value)}
+            type="email"
             className="h-11 rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none transition focus:border-slate-400 dark:border-slate-800 dark:bg-slate-950 dark:focus:border-slate-600"
-            placeholder="https://wa.me/..."
+            placeholder="you@example.com"
           />
         </label>
 

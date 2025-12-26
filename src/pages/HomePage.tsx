@@ -40,7 +40,7 @@ export function HomePage() {
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0">
                   <div className="font-medium">3) Connect</div>
-                  <div className="text-slate-600 dark:text-slate-300">Chat on WhatsApp, view resume.</div>
+                  <div className="text-slate-600 dark:text-slate-300">Reach out by email, view resume.</div>
                 </div>
                 <div className="h-4 w-4" />
               </div>

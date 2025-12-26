@@ -1,4 +1,4 @@
-import { FileText, Instagram, Linkedin, MessageCircle, UserPlus } from 'lucide-react'
+import { FileText, Instagram, Linkedin, Mail, UserPlus } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { useAuth } from '../../contexts/authContext'
 import { useAuthDialog } from '../../contexts/authDialog'
@@ -82,7 +82,7 @@ export function ProfileDialog({ open, profile, onClose }: ProfileDialogProps) {
             <div className="min-w-0">
               <div className="text-sm font-semibold text-slate-900 dark:text-slate-50">Join PAU.CONNECT to unlock</div>
               <div className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-                Bio, guidance topic, WhatsApp, LinkedIn and resume links are visible only after sign-in.
+                Bio, guidance topic, Email, LinkedIn and resume links are visible only after sign-in.
               </div>
             </div>
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-900 text-white dark:bg-white dark:text-slate-950">
@@ -139,15 +139,13 @@ export function ProfileDialog({ open, profile, onClose }: ProfileDialogProps) {
           <a
             className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm transition-colors hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-900/60"
             href={row.whatsapp_link || '#'}
-            target="_blank"
-            rel="noreferrer"
             aria-disabled={!row.whatsapp_link}
             onClick={(e) => {
               if (!row.whatsapp_link) e.preventDefault()
             }}
           >
-            <MessageCircle className="h-4 w-4" />
-            WhatsApp
+            <Mail className="h-4 w-4" />
+            Email
           </a>
           <a
             className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm transition-colors hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-900/60"
