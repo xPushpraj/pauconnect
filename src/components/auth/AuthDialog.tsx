@@ -1,5 +1,6 @@
 import { LogIn, Mail, ShieldCheck } from 'lucide-react'
 import { useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/authContext'
 import { useAuthDialog } from '../../contexts/authDialog'
 import { Modal } from '../Modal'
@@ -22,6 +23,7 @@ function formatAuthError(e: unknown) {
 export function AuthDialog() {
   const auth = useAuth()
   const dialog = useAuthDialog()
+  const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [mode, setMode] = useState<'login' | 'signup'>('login')
@@ -30,6 +32,7 @@ export function AuthDialog() {
   const [error, setError] = useState<string | null>(null)
 
   const needsProfile = auth.isAuthenticated && auth.profileLoaded && !auth.profile
+  const redirectProfileId = dialog.intent.type === 'view_profile' ? dialog.intent.profileId : null
 
   const title = needsProfile ? 'Complete your profile' : 'Login / Signup'
 
@@ -44,6 +47,10 @@ export function AuthDialog() {
             mode="create"
             onSaved={() => {
               dialog.closeDialog()
+              if (redirectProfileId) {
+                dialog.clearIntent()
+                navigate(`/profiles/${redirectProfileId}`)
+              }
             }}
           />
         </div>
@@ -54,14 +61,20 @@ export function AuthDialog() {
       return (
         <div className="space-y-4">
           <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700 dark:border-slate-800 dark:bg-slate-900/40 dark:text-slate-200">
-            You are signed in. You can now view full profiles.
+            {redirectProfileId ? 'You are signed in. Open the requested profile.' : 'You are signed in. You can now view full profiles.'}
           </div>
           <button
             type="button"
-            onClick={() => dialog.closeDialog()}
+            onClick={() => {
+              dialog.closeDialog()
+              if (redirectProfileId) {
+                dialog.clearIntent()
+                navigate(`/profiles/${redirectProfileId}`)
+              }
+            }}
             className="inline-flex h-12 w-full items-center justify-center rounded-xl bg-slate-900 px-4 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
           >
-            Continue
+            {redirectProfileId ? 'Open profile' : 'Continue'}
           </button>
         </div>
       )
@@ -217,7 +230,7 @@ export function AuthDialog() {
         </div>
       </div>
     )
-  }, [auth, dialog, email, error, mode, needsProfile, password, pending, sent])
+  }, [auth, dialog, email, error, mode, needsProfile, navigate, password, pending, redirectProfileId, sent])
 
   return (
     <Modal
@@ -229,6 +242,7 @@ export function AuthDialog() {
         setSent(false)
         setPassword('')
         dialog.closeDialog()
+        dialog.clearIntent()
       }}
       maxWidthClassName="max-w-3xl"
     >

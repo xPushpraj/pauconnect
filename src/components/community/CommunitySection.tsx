@@ -1,10 +1,10 @@
 import { useDeferredValue, useEffect, useMemo, useState } from 'react'
 import { Filter, Search, SlidersHorizontal } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import { BATCHES, COLLEGES } from '../../data/profiles'
 import type { ProfileRowPublic } from '../../lib/types'
 import { supabase } from '../../lib/supabaseClient'
 import { ProfileCard } from './ProfileCard'
-import { ProfileDialog } from './ProfileDialog'
 
 type FilterState = {
   search: string
@@ -28,6 +28,7 @@ function getCollegeLabel(profile: ProfileRowPublic) {
 }
 
 export function CommunitySection() {
+  const navigate = useNavigate()
   const [profiles, setProfiles] = useState<ProfileRowPublic[]>([])
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState<string | null>(null)
@@ -38,9 +39,6 @@ export function CommunitySection() {
     showGuidanceOnly: false,
     showAlumniOnly: false,
   })
-
-  const [selected, setSelected] = useState<ProfileRowPublic | null>(null)
-  const [dialogOpen, setDialogOpen] = useState(false)
 
   const deferredSearch = useDeferredValue(filters.search)
 
@@ -239,21 +237,11 @@ export function CommunitySection() {
             profile={p}
             avatarUrl={avatarUrlById.get(p.id)}
             onView={() => {
-              setSelected(p)
-              setDialogOpen(true)
+              navigate(`/profiles/${p.id}`)
             }}
           />
         ))}
       </div>
-
-      <ProfileDialog
-        open={dialogOpen}
-        profile={selected}
-        onClose={() => {
-          setDialogOpen(false)
-          setSelected(null)
-        }}
-      />
     </section>
   )
 }

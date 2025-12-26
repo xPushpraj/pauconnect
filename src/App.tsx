@@ -3,6 +3,7 @@ import { AppLayout } from './components/AppLayout'
 import { AuthDialog } from './components/auth/AuthDialog'
 import { AboutPage } from './pages/AboutPage'
 import { HomePage } from './pages/HomePage'
+import { ProfilePage } from './pages/ProfilePage'
 import { AuthDialogProvider } from './contexts/AuthDialogContext'
 import { AuthProvider } from './contexts/AuthProvider'
 import { ThemeProvider } from './contexts/ThemeProvider'
@@ -18,6 +19,7 @@ function App() {
               <Route element={<AppLayout />}>
                 <Route index element={<HomePage />} />
                 <Route path="/about" element={<AboutPage />} />
+                <Route path="/profiles/:id" element={<ProfilePage />} />
               </Route>
             </Routes>
           </BrowserRouter>

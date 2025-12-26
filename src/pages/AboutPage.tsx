@@ -1,5 +1,10 @@
 import { ExternalLink, Mail, ShieldCheck, User } from 'lucide-react'
 
+const DONATE_UPI_ID = '8516919394@pthdfc'
+const DONATE_UPI_URL = `upi://pay?pa=${encodeURIComponent(DONATE_UPI_ID)}&pn=${encodeURIComponent('Pushpraj Patel')}&tn=${encodeURIComponent(
+  'Donate for help',
+)}&cu=INR`
+
 export function AboutPage() {
   return (
     <div className="space-y-8">
@@ -25,31 +30,92 @@ export function AboutPage() {
                     <User className="h-5 w-5" />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-sm font-semibold text-slate-900 dark:text-slate-50">Platform Founder: Pushpraj</div>
-                    <div className="mt-1 text-sm text-slate-600 dark:text-slate-300">Lead Developer & Visionary</div>
-                    <div className="mt-3 text-sm text-slate-700 dark:text-slate-200">
-                      Built to ensure no student lacks guidance due to missing connections. Focused on clarity, safety, and a modern, smooth experience.
+                    <div className="text-sm font-semibold text-slate-900 dark:text-slate-50">About Me</div>
+                    <div className="mt-1 text-sm text-slate-600 dark:text-slate-300">Pushpraj Patel · Agritech Enthusiast</div>
+                    <div className="mt-3 space-y-3 text-sm leading-6 text-slate-700 dark:text-slate-200">
+                      <p>
+                        I am Pushpraj Patel, an Agritech Enthusiast currently pursuing B.Tech in Agriculture from Punjab Agricultural University,
+                        Ludhiana. My academic background in agriculture, combined with a strong interest in technology, drives my focus on building
+                        data-driven and digital solutions for modern farming challenges.
+                      </p>
+                      <p>
+                        I maintain an active presence on GitHub, where I document my learning journey and practical projects, and I continuously work on
+                        improving my skills through real-world implementations rather than purely theoretical learning.
+                      </p>
                     </div>
                   </div>
                 </div>
-                <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-950">
+        <div className="p-6 sm:p-10">
+          <div className="grid gap-8 lg:grid-cols-5 lg:items-center">
+            <div className="lg:col-span-2">
+              <div className="mx-auto w-full max-w-sm overflow-hidden rounded-3xl border border-slate-200 bg-slate-50 shadow-sm dark:border-slate-800 dark:bg-slate-900/40">
+                <img
+                  src="/assets/Pushpz_profile (1).jpg"
+                  alt="Pushpraj Patel"
+                  loading="lazy"
+                  className="h-64 w-full object-cover object-top sm:h-80"
+                />
+              </div>
+            </div>
+            <div className="space-y-5 lg:col-span-3">
+              <div>
+                <div className="text-sm font-semibold text-slate-900 dark:text-slate-50">Key Links</div>
+                <div className="mt-3 grid gap-3 sm:grid-cols-2">
                   <a
                     className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
-                    href="https://www.linkedin.com"
+                    href="https://pushpz.netlify.app"
                     target="_blank"
                     rel="noreferrer"
                   >
                     <ExternalLink className="h-4 w-4" />
-                    Founder LinkedIn
+                    Portfolio
                   </a>
                   <a
                     className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm transition-colors hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-900/60"
-                    href="mailto:founder@example.com"
+                    href="https://github.com/xpushpraj"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <ExternalLink className="h-4 w-4" />
+                    GitHub
+                  </a>
+                  <a
+                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm transition-colors hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-900/60"
+                    href="https://www.linkedin.com/in/xpushpz"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <ExternalLink className="h-4 w-4" />
+                    LinkedIn
+                  </a>
+                  <a
+                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm transition-colors hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-900/60"
+                    href="mailto:pushpz072@gmail.com"
                   >
                     <Mail className="h-4 w-4" />
-                    Email Founder
+                    Email
                   </a>
                 </div>
+              </div>
+
+              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/40">
+                <div className="text-sm font-semibold text-slate-900 dark:text-slate-50">Donate for help</div>
+                <div className="mt-2 text-sm text-slate-700 dark:text-slate-200">
+                  UPI ID: <span className="font-semibold">{DONATE_UPI_ID}</span>
+                </div>
+                <a
+                  href={DONATE_UPI_URL}
+                  className="mt-4 inline-flex h-11 items-center justify-center rounded-xl bg-slate-900 px-4 text-sm font-semibold text-white transition-colors hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+                >
+                  Open UPI app
+                </a>
               </div>
             </div>
           </div>

@@ -1,11 +1,16 @@
 import { NavLink, Outlet } from 'react-router-dom'
-import { LogIn, LogOut, Pencil, Users } from 'lucide-react'
-import { useState } from 'react'
+import { LogIn, LogOut, Pencil, Users, X } from 'lucide-react'
+import { useMemo, useState } from 'react'
 import { ThemeToggle } from './ThemeToggle'
 import { useAuth } from '../contexts/authContext'
 import { useAuthDialog } from '../contexts/authDialog'
 import { Modal } from './Modal'
 import { ProfileForm } from './profile/ProfileForm'
+
+const DONATE_UPI_ID = '8516919394@pthdfc'
+const DONATE_UPI_URL = `upi://pay?pa=${encodeURIComponent(DONATE_UPI_ID)}&pn=${encodeURIComponent('Pushpraj Patel')}&tn=${encodeURIComponent(
+  'Donate for help',
+)}&cu=INR`
 
 function linkClassName({ isActive }: { isActive: boolean }) {
   return [
@@ -20,6 +25,51 @@ export function AppLayout() {
   const auth = useAuth()
   const authDialog = useAuthDialog()
   const [editOpen, setEditOpen] = useState(false)
+  const [donateHidden, setDonateHidden] = useState(() => {
+    try {
+      return window.localStorage.getItem('pauconnect_donate_hidden') === '1'
+    } catch {
+      return false
+    }
+  })
+
+  const donateWidget = useMemo(() => {
+    if (donateHidden) return null
+    return (
+      <div className="fixed bottom-4 right-4 z-50 w-[calc(100%-2rem)] max-w-xs">
+        <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-md dark:border-slate-800 dark:bg-slate-950">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <div className="text-sm font-semibold text-slate-900 dark:text-slate-50">Donate for help</div>
+              <div className="mt-1 truncate text-xs text-slate-600 dark:text-slate-300">UPI: {DONATE_UPI_ID}</div>
+            </div>
+            <button
+              type="button"
+              aria-label="Close donate"
+              onClick={() => {
+                setDonateHidden(true)
+                try {
+                  window.localStorage.setItem('pauconnect_donate_hidden', '1')
+                } catch {
+                  return
+                }
+              }}
+              className="inline-flex h-8 w-8 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-slate-900/60 dark:hover:text-slate-200"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+
+          <a
+            href={DONATE_UPI_URL}
+            className="mt-3 inline-flex h-10 w-full items-center justify-center rounded-xl bg-slate-900 px-4 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+          >
+            Open UPI app
+          </a>
+        </div>
+      </div>
+    )
+  }, [donateHidden])
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-50">
@@ -118,6 +168,8 @@ export function AppLayout() {
           }}
         />
       </Modal>
+
+      {donateWidget}
 
       <footer className="border-t border-slate-200/70 py-10 text-sm text-slate-600 dark:border-slate-800/70 dark:text-slate-300">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
